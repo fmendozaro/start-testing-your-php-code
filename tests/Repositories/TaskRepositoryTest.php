@@ -74,5 +74,18 @@ class TaskRepositoryTest extends TestCase
         $this->subject->create('start testing');
     }
 
+    public function testCreateReturnsFalse()
+    {
+        $statement = Mockery::mock('mysql_stmt_mock')->shouldIgnoreMissing();
+        $statement->shouldReceive('bind_param')
+            ->with('s', 'start testing');
+        $statement->shouldReceive('execute')
+            ->andReturn(false);
+        $this->dbConnection->shouldReceive('prepare')
+            ->with('INSERT INTO tasks (note, created) VALUES (?, NOW())')
+            ->andReturn($statement);
+        $actual = $this->subject->create('start testing');
+        $this->assertFalse($actual);
+    }
 
 }
