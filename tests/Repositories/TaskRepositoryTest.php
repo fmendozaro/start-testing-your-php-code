@@ -42,5 +42,23 @@ class TaskRepositoryTest extends TestCase
         $this->assertSame([], $this->subject->all());
     }
 
-
+    public function testAllReturnsTasks()
+    {
+        $result = Mockery::mock('mysql_result_mock')->shouldIgnoreMissing();
+        $result->num_rows = 2;
+        $result->shouldReceive('fetch_assoc')
+            ->andReturn(
+                ['id' => 1, 'note' => 'task 1'],
+                ['id' => 2, 'note' => 'task 2'],
+                false
+            );
+        $this->dbConnection->shouldReceive('query')
+            ->with('SELECT note FROM tasks ORDER BY created DESC')
+            ->andReturn($result);
+        $actual = $this->subject->all();
+        $this->assertCount(2, $actual);
+        $this->assertEquals('task 1', $actual[0]->getNote());
+        $this->assertEquals('task 2', $actual[1]->getNote());
+        $result->shouldHaveReceived('free');
+    }
 }
