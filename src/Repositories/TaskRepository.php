@@ -9,6 +9,7 @@ class TaskRepository
 {
     private $dbConnection;
 
+    // Dependency injection: \mysqli $dbConnection
     public function __construct(\mysqli $dbConnection)
     {
         $this->dbConnection = $dbConnection;
