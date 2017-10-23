@@ -61,4 +61,18 @@ class TaskRepositoryTest extends TestCase
         $this->assertEquals('task 2', $actual[1]->getNote());
         $result->shouldHaveReceived('free');
     }
+
+    public function testCreateThrowsException()
+    {
+        $this->dbConnection->shouldReceive('prepare')
+            ->with('INSERT INTO tasks (note, created) VALUES (?, NOW())')
+            ->andReturn(false);
+        $this->dbConnection->shouldReceive('getError')
+            ->andReturn('oh noes');
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('oh noes');
+        $this->subject->create('start testing');
+    }
+
+
 }
