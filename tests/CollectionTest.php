@@ -11,28 +11,40 @@ use PHPUnit\Framework\TestCase;
 class CollectionTest extends TestCase
 {
 
+    private $manyCollection;
+    private $oneCollection;
+    private $emptyCollection;
+
     public function setUp(){
+
+        $this->emptyCollection = new Collection();
+
+        $this->oneCollection = new Collection();
+        $this->oneCollection->add('one');
+
+        $this->manyCollection = new Collection();
+        $this->manyCollection->add(2);
+        $this->manyCollection->add('three');
+
         parent::setUp();
     }
 
     // methods add, remove, size, contains, isEmpty
     public function testIsEmpty(){
-        $collection = new Collection();
-        $this->assertTrue(true, $collection->isEmpty());
-        $collection->add('Fer');
-        $this->assetFalse($collection->isEmpty());
+        $this->assertTrue(true, $this->emptyCollection->isEmpty());
+        $this->emptyCollection->add('Fer');
+        $this->assetFalse($this->emptyCollection->isEmpty());
     }
 
     // it's always a good idea to test 0, 1 and many
     public function testSize(){
-        $collection = new Collection();
-        $collection->add('one');
+        $this->oneCollection->add('one');
 
-        $this->assertSame(1, $collection->size());
+        $this->assertSame(1, $this->oneCollection->size());
 
-        $collection->add(2);
-        $collection->add('three');
+        $this->manyCollection->add(2);
+        $this->manyCollection->add('three');
 
-        $this->assertSame(3, $collection->size());
+        $this->assertSame(3, $this->manyCollection->size());
     }
 }
