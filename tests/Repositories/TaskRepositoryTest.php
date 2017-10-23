@@ -41,4 +41,6 @@ class TaskRepositoryTest extends TestCase
             ->andReturn($result);
         $this->assertSame([], $this->subject->all());
     }
+
+
 }
