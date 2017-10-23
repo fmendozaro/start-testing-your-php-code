@@ -44,7 +44,7 @@ class TaskRepositoryTest extends TestCase
 
     public function testAllReturnsTasks()
     {
-        $result = Mockery::mock('mysql_result_mock')->shouldIgnoreMissing();
+        $result = Mockery::mock('mysqli_result_mock')->shouldIgnoreMissing();
         $result->num_rows = 2;
         $result->shouldReceive('fetch_assoc')
             ->andReturn(
